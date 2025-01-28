@@ -8,12 +8,22 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 document.getElementById('gameContainer').appendChild(renderer.domElement);
 
 // Tworzenie podłogi
-const floorGeometry = new THREE.PlaneGeometry(20, 20);
-const floorMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-const floor = new THREE.Mesh(floorGeometry, floorMaterial);
-floor.rotation.x = -Math.PI / 2; // Obrót, by podłoga była pozioma
-scene.add(floor);
 
+// Podłoga w kratkę
+const floorSize = 20;
+const floorSegments = 10;
+const floorGeometry = new THREE.PlaneGeometry(floorSize, floorSize, floorSegments, floorSegments);
+
+// Materiał podłogi w kratkę
+const floorMaterial = new THREE.MeshBasicMaterial({
+  color: 0x00ff00, // Zielony
+  wireframe: true, // Wyświetlaj jako siatka (kratka)
+});
+
+// Stwórz podłogę
+const floor = new THREE.Mesh(floorGeometry, floorMaterial);
+floor.rotation.x = -Math.PI / 2; // Obróć, by była pozioma
+scene.add(floor);
 // Tworzenie ludzika (sześcian)
 const cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
 const cubeMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
