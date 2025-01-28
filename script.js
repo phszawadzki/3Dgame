@@ -47,4 +47,43 @@ function init() {
 
   // Obsługa dotyku
   document.addEventListener('touchstart', handleTouchStart);
-  document.addEvent
+  document.addEventListener('touchmove', handleTouchMove);
+
+  animate();
+}
+
+// Obsługa zmiany rozmiaru okna
+function onWindowResize() {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+}
+
+// Obsługa dotyku - zapisanie pozycji początkowej
+function handleTouchStart(event) {
+  touchStartX = event.touches[0].clientX;
+  touchStartY = event.touches[0].clientY;
+}
+
+// Obsługa dotyku - przesuwanie gracza
+function handleTouchMove(event) {
+  const touchMoveX = event.touches[0].clientX - touchStartX;
+  const touchMoveY = event.touches[0].clientY - touchStartY;
+
+  // Przesunięcie gracza
+  cube.position.x += touchMoveX * 0.01; // Ruch w osi X
+  cube.position.z += touchMoveY * 0.01; // Ruch w osi Z
+
+  // Zaktualizowanie pozycji startowej
+  touchStartX = event.touches[0].clientX;
+  touchStartY = event.touches[0].clientY;
+}
+
+// Animacja
+function animate() {
+  requestAnimationFrame(animate);
+  renderer.render(scene, camera);
+}
+
+// Inicjalizacja sceny
+init();
