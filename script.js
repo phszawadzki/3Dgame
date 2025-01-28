@@ -35,8 +35,8 @@ camera.lookAt(0, 0, 0);
 // Obsługa dotyku
 let touchStartX = 0;
 let touchStartY = 0;
-let sceneOffsetX = 0;
-let sceneOffsetY = 0;
+let floorOffsetX = 0;
+let floorOffsetY = 0;
 
 document.addEventListener('touchstart', (event) => {
   touchStartX = event.touches[0].clientX;
@@ -51,13 +51,13 @@ document.addEventListener('touchmove', (event) => {
   cube.position.x += touchMoveX * 0.01; // Ruch w poziomie
   cube.position.z += touchMoveY * 0.01; // Ruch w pionie
 
-  // Przesuwanie całej sceny
-  sceneOffsetX += touchMoveX * 0.01;
-  sceneOffsetY += touchMoveY * 0.01;
+  // Przesuwanie podłogi
+  floorOffsetX += touchMoveX * 0.01;
+  floorOffsetY += touchMoveY * 0.01;
 
-  // Przesuwanie sceny (kamery)
-  camera.position.x = sceneOffsetX;
-  camera.position.z = sceneOffsetY;
+  // Przesuwanie podłogi
+  floor.position.x = floorOffsetX;
+  floor.position.z = floorOffsetY;
 
   // Zaktualizowanie pozycji dotyku
   touchStartX = event.touches[0].clientX;
