@@ -1,43 +1,42 @@
-// Import Three.js
+// Inicjalizacja sceny, kamery i renderera
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer();
-
-// Renderer ustawiony w kontenerze
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.getElementById('gameContainer').appendChild(renderer.domElement);
 
-// Tworzenie podłogi
+// Dodanie światła
+const light = new THREE.AmbientLight(0xffffff, 1); // Uniwersalne oświetlenie
+scene.add(light);
 
 // Podłoga w kratkę
 const floorSize = 20;
 const floorSegments = 10;
 const floorGeometry = new THREE.PlaneGeometry(floorSize, floorSize, floorSegments, floorSegments);
-
-// Materiał podłogi w kratkę
 const floorMaterial = new THREE.MeshBasicMaterial({
   color: 0x00ff00, // Zielony
   wireframe: true, // Wyświetlaj jako siatka (kratka)
 });
-
-// Stwórz podłogę
 const floor = new THREE.Mesh(floorGeometry, floorMaterial);
 floor.rotation.x = -Math.PI / 2; // Obróć, by była pozioma
 scene.add(floor);
-// Tworzenie ludzika (sześcian)
+
+// Ludzik (sześcian)
 const cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
 const cubeMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
 const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-cube.position.y = 0.5; // Podniesienie nad podłogę
+cube.position.set(0, 0.5, 0); // Podniesienie sześcianu nad podłogę
 scene.add(cube);
 
-// Kamera
+// Ustawienia kamery
 camera.position.set(0, 5, 10);
 camera.lookAt(0, 0, 0);
 
 // Obsługa dotyku
 let touchStartX = 0;
 let touchStartY = 0;
+let sceneOffsetX = 0;
+let sceneOffsetY = 0;
 
 document.addEventListener('touchstart', (event) => {
   touchStartX = event.touches[0].clientX;
@@ -48,9 +47,19 @@ document.addEventListener('touchmove', (event) => {
   const touchMoveX = event.touches[0].clientX - touchStartX;
   const touchMoveY = event.touches[0].clientY - touchStartY;
 
+  // Przesuwanie ludzika
   cube.position.x += touchMoveX * 0.01; // Ruch w poziomie
   cube.position.z += touchMoveY * 0.01; // Ruch w pionie
 
+  // Przesuwanie całej sceny
+  sceneOffsetX += touchMoveX * 0.01;
+  sceneOffsetY += touchMoveY * 0.01;
+
+  // Przesuwanie sceny (kamery)
+  camera.position.x = sceneOffsetX;
+  camera.position.z = sceneOffsetY;
+
+  // Zaktualizowanie pozycji dotyku
   touchStartX = event.touches[0].clientX;
   touchStartY = event.touches[0].clientY;
 });
