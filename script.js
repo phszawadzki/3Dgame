@@ -42,21 +42,11 @@ function init() {
   directionalLight.position.set(10, 10, 10);
   scene.add(directionalLight);
 
-  // Obsługa zmiany rozmiaru okna
-  window.addEventListener('resize', onWindowResize);
-
   // Obsługa dotyku
   document.addEventListener('touchstart', handleTouchStart);
   document.addEventListener('touchmove', handleTouchMove);
 
   animate();
-}
-
-// Obsługa zmiany rozmiaru okna
-function onWindowResize() {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
 // Obsługa dotyku - zapisanie pozycji początkowej
